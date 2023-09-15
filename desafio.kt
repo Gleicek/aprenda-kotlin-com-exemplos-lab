@@ -1,21 +1,40 @@
-// [Template no Kotlin Playground](https://pl.kotl.in/WcteahpyN)
+import java.awt.print.Printable
 
-enum class Nivel { BASICO, INTERMEDIARIO, DIFICIL }
+enum class Nivel (val printableName: String) { BASICO("Básico"), INTERMEDIARIO("Intermediário"), AVANCADO("Avançado") }
 
-class Usuario
+data class Usuario(var nome: String, var sobrenome: String, val RA: Int)
 
 data class ConteudoEducacional(var nome: String, val duracao: Int = 60)
 
-data class Formacao(val nome: String, var conteudos: List<ConteudoEducacional>) {
+data class Formacao(val nome: String, var nivel: Nivel, var conteudos: List<ConteudoEducacional>) {
 
     val inscritos = mutableListOf<Usuario>()
-    
+
     fun matricular(usuario: Usuario) {
-        TODO("Utilize o parâmetro $usuario para simular uma matrícula (usar a lista de $inscritos).")
+        inscritos.add(usuario)
+    }
+
+    fun imprimirInfo(){
+        println("Curso: ${nome} \nNível: ${nivel.printableName} \n")
+        conteudos.forEach {println("Disciplina: ${it.nome} || Duração: ${it.duracao}")}
+        println("\nAlunos matriculados:")
+        inscritos.forEach {println("Nome: ${it.nome} ${it.sobrenome}, RA: ${it.RA} ")}
     }
 }
 
 fun main() {
-    TODO("Analise as classes modeladas para este domínio de aplicação e pense em formas de evoluí-las.")
-    TODO("Simule alguns cenários de teste. Para isso, crie alguns objetos usando as classes em questão.")
+
+    val conteudoKotlin = mutableListOf(
+        ConteudoEducacional("Git", 60),
+        ConteudoEducacional("Data Types", 60),
+        ConteudoEducacional("Collections", 120)
+    )
+
+    var curso = Formacao(nome="Kotlin",nivel=Nivel.BASICO,conteudos=conteudoKotlin)
+
+    curso.matricular(Usuario(nome="Ana", sobrenome = "Alves", RA = 100))
+    curso.matricular(Usuario(nome="Bruna", sobrenome = "Monteiro", RA = 101))
+    curso.matricular(Usuario(nome="Camila", sobrenome = "Ribeiro", RA = 102))
+    curso.imprimirInfo()
+
 }
